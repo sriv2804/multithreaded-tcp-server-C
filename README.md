@@ -1,6 +1,6 @@
 # Multithreaded TCP Server in C
 
-This project implements a multithreaded TCP server in C. It utilizes a circular shared buffer to manage incoming client connections efficiently.
+This project implements a multithreaded TCP server in C using a producer–consumer queue. The main thread accepts client sockets and enqueues them into a circular buffer; a pool of worker threads dequeues and serves them. Synchronization uses a pthread mutex and a condition variable to avoid busy-waiting when the queue is empty.
 
 ## Components
 
@@ -14,8 +14,23 @@ To compile and run this project, you will need a C compiler (e.g., GCC).
 
 ### Compilation
 
+Using Makefile:
+
 ```bash
-gcc server.c cq.c -o server -pthread
+make
+./server
+```
+
+Clean build artifacts:
+
+```bash
+make clean
+```
+
+Alternative manual build:
+
+```bash
+gcc -Wall -pthread server.c cq.c -o server
 ```
 
 ### Running the Server
